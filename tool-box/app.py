@@ -2,47 +2,34 @@ import streamlit as st
 from mytools.llm_settings import LlmSettings
 from modules.llm_settings_ui import SettingsUI
 from modules.send_request_ui import SendRequestUi
+from demos.llm_settings_page import llm_settings_page
+
+
+def intro():
+    st.markdown(
+        """
+        ## Welcome to the infinite-loop tool box!
+        
+        This streamlit app is a collection of tools to help you experiment 
+        with different ideas and concepts about LLMs, AI, machine learning and eveything
+        that gets discussed on ['infinite loop'](https://publish.obsidian.md/infinite-loop)
+        
+        **👈 Select a demo from the sidebar**
+       
+        ### The blog:
+        [infinite-loop](https://publish.obsidian.md/infinite-loop)
+    """
+    )
 
 
 def main():
-    st.title("LLM Settings Manager")
+    page_names_to_funcs = {
+        "—": intro,
+        "LLM Settings": llm_settings_page,
+    }
 
-    tab1, tab2, tab3 = st.tabs(["OPENAI", "GROQ", "OLLAMA"])
-
-    # Create OPENAI settings view+model
-    with tab1:
-        settings = LlmSettings(name="OPENAI")
-        ui = SettingsUI(settings)
-        ui.render()
-
-        request_ui = SendRequestUi(settings)
-        request_ui.render()
-
-    # Create GROQ settings view+model
-    # create dict of available models
-    with tab2:
-        models = {"LLAMA3_8B": "llama3-8b-8192", "LLAMA3_70B": "llama3-70b-8192"}
-        embeddings = {"NO_MODEL": "n/a"}
-        settings = LlmSettings(
-            name="GROQ",
-            models=models,
-            embedding_models=embeddings,
-            url="https://api.groq.com/openai/v1",
-        )
-        ui = SettingsUI(settings)
-        ui.render()
-
-    with tab3:
-        models = {"LLAMA3-8B": "llama3:8b-instruct-q8_0", "CODEQWEN": "codeqwen:7b-chat-v1.5-q8_0"}  # define your local OLLAMA Models
-        embeddings = {"MAXBAI": "mxbai-embed-large:latest"}  # define your local OLLAMA Models
-        settings = LlmSettings(
-            name="OLLAMA",
-            models=models,
-            embedding_models=embeddings,
-            url="http://127.0.0.1:122344/openai/v1",
-        )
-        ui = SettingsUI(settings)
-        ui.render()
+    demo_name = st.sidebar.selectbox("Choose a demo", page_names_to_funcs.keys())
+    page_names_to_funcs[demo_name]()
 
 
 if __name__ == "__main__":

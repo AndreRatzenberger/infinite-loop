@@ -9,8 +9,10 @@ class SendRequestUi:
     def render(self):
         """Render the UI components for API interaction."""
         st.write(f"### Send a request to {self.settings.name}")
-        user_input = st.text_input("Enter your query here:")
-        if st.button("Send Request"):
+        user_input = st.text_input(
+            "Enter your query here:", key=f"{self.settings.name}_query_txt"
+        )
+        if st.button("Send Request", key=f"{self.settings.name}_query_btn"):
             self.send_request(user_input)
 
     def send_request(self, user_input):
@@ -19,7 +21,7 @@ class SendRequestUi:
         base_url = self.settings.get_setting(f"{self.settings.name}_BASE_URL")
         model = self.settings.get_setting(f"{self.settings.name}_MODEL")
 
-        client = OpenAI(api_key=api_key)
+        client = OpenAI(api_key=api_key, base_url=base_url)
 
         response = client.chat.completions.create(
             model=model,

@@ -9,6 +9,7 @@ class LlmSettings(mytools.user_settings.UserSettings):
         url="https://api.openai.com/v1",
         models=None,
         embedding_models=None,
+        api_key="sk-",
     ):
         if models is None:
             models = {"GPT_3_5_TURBO": "gpt-3.5-turbo", "GPT_4_TURBO": "gpt-4-turbo"}
@@ -20,7 +21,7 @@ class LlmSettings(mytools.user_settings.UserSettings):
             }
 
         default_settings = {
-            f"{name}_API_KEY": "sk-",  # Default API key placeholder
+            f"{name}_API_KEY": api_key,  # Default API key placeholder
             f"{name}_BASE_URL": url,
             f"{name}_MODEL": list(models.values())[0],
             f"{name}_EMBEDDING_MODEL": list(embedding_models.values())[0],
