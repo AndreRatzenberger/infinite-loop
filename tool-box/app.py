@@ -33,8 +33,8 @@ def main():
         ui.render()
 
     with tab3:
-        models = {"NO_MODEL": "n/a"}  # define your local OLLAMA Models
-        embeddings = {"NO_MODEL": "n/a"}  # define your local OLLAMA Models
+        models = {"LLAMA3-8B": "llama3:8b-instruct-q8_0", "CODEQWEN": "codeqwen:7b-chat-v1.5-q8_0"}  # define your local OLLAMA Models
+        embeddings = {"MAXBAI": "mxbai-embed-large:latest"}  # define your local OLLAMA Models
         settings = LlmSettings(
             name="OLLAMA",
             models=models,
