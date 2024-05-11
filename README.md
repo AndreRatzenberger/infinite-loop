@@ -2,13 +2,13 @@
 
 Content repository for the 'infinite-loop' blog
 
-## How to get started
+## How to get started for python illiterates
 
 ### Install miniconda
 
 Get [miniconda](https://docs.anaconda.com/free/miniconda/)
 
-Skip if you already know your shit.
+Skip if you already know your shit and do whatever you want.
 
 ### Install poetry
 
@@ -61,3 +61,13 @@ poetry install
 This task is configured to run the currently open document as streamlit application in debug mode
 
 ![alt text](.img/image-1.png)
+
+Everything should be running fine now. If not, github is the wrong place for you anyway.
+
+## Tool box
+
+Modular components for experementing with LLMs
+
+## blog
+
+Well, stuff for my blog. Juypter Notebooks, local notebooks, code snippets etc etc... that kind of stuff
