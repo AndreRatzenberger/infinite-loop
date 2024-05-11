@@ -4,25 +4,30 @@ Content repository for the 'infinite-loop' blog
 
 ## How to get started
 
+### Install miniconda
+
+Get [miniconda](https://docs.anaconda.com/free/miniconda/)
+
+Skip if you already know your shit.
+
 ### Install poetry
 
 ```bash
 pip install poetry
 ```
 
-### Install python 3.10.x
+### Create a python 3.10.x environment (AFTER installing poetry)
 
-Use your favourite way to install python 3.10.x
 
-My recommendtaion:
-
-Get [miniconda](https://docs.anaconda.com/free/miniconda/) and create a python 3.10 environment
-
-To replicate my environment then run
+To recreate my environment:
 
 ```bash
 conda create -n 'your-env-name' python=3.10.12 
 ```
+
+I'm repeating myself: 
+- DON'T INSTALL POETRY IN THIS NEWLY CREATED ENVIRONMENT
+- INSTALL POETRY IN THE MINICONDA BASE ENVIRONMENT
 
 ### Clone this repository and open it in VSCode
 
@@ -52,5 +57,7 @@ poetry install
 ```
 
 ### Open the app.py in the edior and start the "streamlit debug" task in the debugger
+
+This task is configured to run the currently open document as streamlit application in debug mode
 
 ![alt text](.img/image-1.png)
