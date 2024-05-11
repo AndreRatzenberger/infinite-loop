@@ -1,8 +1,5 @@
 import streamlit as st
-from mytools.llm_settings import LlmSettings
-from modules.llm_settings_ui import SettingsUI
-from modules.send_request_ui import SendRequestUi
-from demos.llm_settings_page import llm_settings_page
+from toolbox.demos.llm_settings_page import llm_settings_page
 
 
 def intro():

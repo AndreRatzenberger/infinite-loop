@@ -1,7 +1,7 @@
-import mytools.user_settings
+import toolbox.mytools.user_settings
 
 
-class LlmSettings(mytools.user_settings.UserSettings):
+class LlmSettings(toolbox.mytools.user_settings.UserSettings):
     def __init__(
         self,
         env_file=".env",
