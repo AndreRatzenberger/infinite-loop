@@ -4,7 +4,7 @@ from toolbox.modules.llm_settings_ui import SettingsUI
 from toolbox.modules.send_request_ui import SendRequestUi
 
 
-def llm_settings_page():
+def init():
     st.title("LLM Settings Manager")
 
     tab1, tab2, tab3 = st.tabs(["OPENAI", "GROQ", "OLLAMA"])
@@ -51,3 +51,6 @@ def render(settings):
 
     request_ui = SendRequestUi(settings)
     request_ui.render()
+
+
+init()

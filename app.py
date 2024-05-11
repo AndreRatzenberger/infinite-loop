@@ -1,5 +1,13 @@
 import streamlit as st
-from toolbox.demos.llm_settings_page import llm_settings_page
+from st_pages import Page, Section, add_page_title, show_pages
+
+
+show_pages(
+    [
+        Page("app.py", "Home", "🏠"),
+        Page("toolbox/demos/llm_settings_page.py", "LLM Settings Demo", "🔧"),
+    ]
+)
 
 
 def intro():
@@ -19,15 +27,5 @@ def intro():
     )
 
 
-def main():
-    page_names_to_funcs = {
-        "—": intro,
-        "LLM Settings": llm_settings_page,
-    }
-
-    demo_name = st.sidebar.selectbox("Choose a demo", page_names_to_funcs.keys())
-    page_names_to_funcs[demo_name]()
-
-
 if __name__ == "__main__":
-    main()
+    intro()
