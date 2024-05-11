@@ -1,6 +1,6 @@
 # infinite-loop
 
-Content repository for the 'infinite-loop' blog
+Content repository for the [infinite-loop](https://publish.obsidian.md/infinite-loop) blog
 
 ## How to get started for python illiterates
 
@@ -18,21 +18,22 @@ pip install poetry
 
 ### Create a python 3.10.x environment (AFTER installing poetry)
 
-
 To recreate my environment:
 
 ```bash
 conda create -n 'your-env-name' python=3.10.12 
 ```
 
-I'm repeating myself: 
+I'm repeating myself:
+
 - DON'T INSTALL POETRY IN THIS NEWLY CREATED ENVIRONMENT
 - INSTALL POETRY IN THE MINICONDA BASE ENVIRONMENT
 
 ### Clone this repository and open it in VSCode
 
 clone:
-```
+
+```bash
 git clone https://github.com/AndreRatzenberger/infinite-loop
 ```
 
@@ -62,12 +63,5 @@ This task is configured to run the currently open document as streamlit applicat
 
 ![alt text](.img/image-1.png)
 
-Everything should be running fine now. If not, github is the wrong place for you anyway.
-
-## Tool box
-
-Modular components for experementing with LLMs
-
-## blog
-
-Well, stuff for my blog. Juypter Notebooks, local notebooks, code snippets etc etc... that kind of stuff
+Everything should be running fine now.
+If not, github is the wrong place for you anyway. It's ok.
