@@ -29,9 +29,9 @@ class LlmSettings(toolbox.mytools.user_settings.UserSettings):
         super().__init__(env_file, default_settings, name)
         self.models = models
         self.embedding_models = embedding_models
-        self._load_llm_settings()
+        self._load_my_settings()
 
-    def _load_llm_settings(self):
+    def _load_my_settings(self):
         """Load settings with the possibility of default values if not present in .env."""
         self.api_key = self.get_setting("API_KEY")
         self.base_url = self.get_setting("BASE_URL")

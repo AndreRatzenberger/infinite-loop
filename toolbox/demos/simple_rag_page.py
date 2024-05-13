@@ -1,4 +1,5 @@
 import streamlit as st
+from toolbox.demos.sidebar import render_sidebar
 from toolbox.mytools.llm_settings import LlmSettings
 from toolbox.mytools.cnn_news_crawler import CNNNewsCrawler
 from toolbox.modules.llm_settings_ui import SettingsUI
@@ -25,3 +26,4 @@ def render(model):
 
 
 init()
+render_sidebar()

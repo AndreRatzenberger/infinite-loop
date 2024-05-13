@@ -7,6 +7,9 @@ class SettingsUI:
 
     def render(self):
         with st.expander(f"{self.settings.name} Settings"):
+            if st.button("Activate LLM", key=f"{self.settings.name}_ACTIVATE_BTN"):
+                st.session_state.active_components.llm = self.settings.name
+                st.success("LLM activated successfully!")
             # Render API Key input
             self._render_text_input("API Key", "API_KEY", is_password=True)
 

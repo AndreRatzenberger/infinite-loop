@@ -1,4 +1,5 @@
 import streamlit as st
+from toolbox.demos.sidebar import render_sidebar
 from toolbox.mytools.db_settings import DBSettings
 from toolbox.modules.db_settings_ui import DBSettingsUI
 
@@ -27,3 +28,4 @@ def render(settings):
 
 
 init()
+render_sidebar()

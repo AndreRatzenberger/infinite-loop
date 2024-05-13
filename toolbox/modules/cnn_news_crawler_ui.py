@@ -24,6 +24,7 @@ class CNNNewsCrawlerUi:
         if st.button("Download articles", use_container_width=True):
             self.cnn_news_crawler.st_progress_bar = progress
             self.cnn_news_crawler.load_articles(amount)
+            st.session_state.llama_index_docs = self.cnn_news_crawler.documents
             st.rerun()
 
     def _render_link_list(self):
