@@ -6,6 +6,11 @@ show_pages(
     [
         Page("app.py", "Home", "🏠"),
         Page("toolbox/demos/llm_settings_page.py", "LLM Settings Demo", "🔧"),
+        Page(
+            "toolbox/demos/doc_storage_settings_page.py",
+            "Doc Store Settings Demo",
+            "🔧",
+        ),
         Page("toolbox/demos/simple_rag_page.py", "Simple RAG Demo", ":book:"),
     ]
 )

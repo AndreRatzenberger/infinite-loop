@@ -64,4 +64,3 @@ This task is configured to run the currently open document as streamlit applicat
 ![alt text](.img/image-1.png)
 
 Everything should be running fine now.
-If not, github is the wrong place for you anyway. It's ok.
