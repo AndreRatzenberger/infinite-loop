@@ -1,13 +1,10 @@
+from toolbox.mytools.llm_settings import LlmSettings
 import toolbox.mytools.user_settings
 
 
 class ActiveComponentSettings(toolbox.mytools.user_settings.UserSettings):
     def __init__(
-        self,
-        env_file=".env",
-        llm="OPEN_AI",
-        doc_store="MONGO_DB",
-        name="ACTIVE",
+        self, env_file=".env", llm="OPEN_AI", doc_store="MONGO_DB", name="ACTIVE"
     ):
         default_settings = {
             "LLM": llm,

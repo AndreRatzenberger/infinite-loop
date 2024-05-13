@@ -32,6 +32,7 @@ class BasicBlogGenerator(dspy.Signature):
 
 generate_blog = dspy.Predict(BasicBlogGenerator)
 
+paramname = "subject"
 subject = "Cats (use dry-humor and sarcasm)"
 pred = generate_blog(subject=subject)
 

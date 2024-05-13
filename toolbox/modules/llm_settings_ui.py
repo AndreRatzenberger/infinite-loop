@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-class SettingsUI:
+class LlmSettingsUI:
     def __init__(self, settings):
         self.settings = settings
 

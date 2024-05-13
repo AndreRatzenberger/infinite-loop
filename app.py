@@ -14,9 +14,13 @@ show_pages(
             "Doc Store Settings",
             "🔧",
         ),
-        Page("toolbox/demos/simple_rag_page.py", "Simple RAG", ":book:"),
+        Section(name="llama-index", icon=":book:"),
+        Page("toolbox/demos/simple_rag_page.py", "Doc Ingestion"),
+        Section(name="DSPy", icon=":book:"),
+        Page("toolbox/demos/dspy_page.py", "DSPy Signatures"),
     ]
 )
+add_page_title()
 
 
 def init_vars():

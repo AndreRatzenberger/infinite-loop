@@ -12,7 +12,11 @@ class LlmSettings(toolbox.mytools.user_settings.UserSettings):
         api_key="sk-",
     ):
         if models is None:
-            models = {"GPT_3_5_TURBO": "gpt-3.5-turbo", "GPT_4_TURBO": "gpt-4-turbo"}
+            models = {
+                "GPT_3_5_TURBO": "gpt-3.5-turbo",
+                "GPT_4_TURBO": "gpt-4-turbo",
+                "GPT_4_OMNI": "gpt-4o",
+            }
         if embedding_models is None:
             embedding_models = {
                 "EMBEDDING_ADA_002": "text-embedding-ada-002",

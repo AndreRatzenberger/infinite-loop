@@ -1,13 +1,12 @@
 import streamlit as st
 from toolbox.demos.sidebar import render_sidebar
 from toolbox.mytools.llm_settings import LlmSettings
-from toolbox.modules.llm_settings_ui import SettingsUI
+from toolbox.modules.llm_settings_ui import LlmSettingsUI
 from toolbox.modules.send_request_ui import SendRequestUi
+from st_pages import add_page_title
 
 
 def init():
-    st.title("LLM Settings Manager")
-
     tab1, tab2, tab3 = st.tabs(["OPENAI", "GROQ", "OLLAMA"])
 
     # Create OPENAI settings view+model
@@ -47,12 +46,13 @@ def init():
 
 
 def render(settings):
-    ui = SettingsUI(settings)
+    ui = LlmSettingsUI(settings)
     ui.render()
 
     request_ui = SendRequestUi(settings)
     request_ui.render()
 
 
+add_page_title()
 init()
 render_sidebar()

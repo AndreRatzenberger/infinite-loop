@@ -2,10 +2,10 @@ import streamlit as st
 from toolbox.demos.sidebar import render_sidebar
 from toolbox.mytools.db_settings import DBSettings
 from toolbox.modules.db_settings_ui import DBSettingsUI
+from st_pages import add_page_title
 
 
 def init():
-    st.title("Document Storage Manager")
 
     tab1, tab2, tab3 = st.tabs(["MongoDB", "Azure Blob Storage", "local filesystem"])
 
@@ -27,5 +27,6 @@ def render(settings):
     ui.render()
 
 
+add_page_title()
 init()
 render_sidebar()
