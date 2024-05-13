@@ -7,6 +7,9 @@ class DBSettingsUI:
 
     def render(self):
         with st.expander(f"{self.settings.name} Settings"):
+            if st.button("Activate DocStore", key=f"{self.settings.name}_ACTIVATE_BTN"):
+                st.session_state.active_components.doc_store = self.settings.name
+                st.success("DocStore activated successfully!")
             self._render_text_input(
                 "Connection String:",
                 "CONNECTION_STRING",
