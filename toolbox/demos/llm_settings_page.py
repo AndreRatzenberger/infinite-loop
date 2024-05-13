@@ -23,7 +23,7 @@ def init():
             name="GROQ",
             models=models,
             embedding_models=embeddings,
-            url="https://api.groq.com/openai/v1",
+            url="https://api.groq.com/openai/v1/",
         )
         render(settings)
 
@@ -39,7 +39,7 @@ def init():
             name="OLLAMA",
             models=models,
             embedding_models=embeddings,
-            url="http://localhost:11434/v1",
+            url="http://localhost:11434/v1/",
             api_key="ollama",
         )
         render(settings)

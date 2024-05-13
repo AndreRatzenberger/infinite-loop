@@ -13,10 +13,12 @@ def init():
         st.session_state.cnn_crawler = CNNNewsCrawler()
 
     st.write(f"{len(st.session_state.cnn_crawler.documents)} Documents loaded.")
-    tab1, tab2, tab3 = st.tabs(["Get Content", "Vectorize", "Query"])
+    tab1, tab2, tab3 = st.tabs(["Manage Docs", "Scrape News", "Load from PDF"])
 
-    # Create OPENAI settings view+model
     with tab1:
+        st.write("Manage Documents")
+
+    with tab2:
         render(st.session_state.cnn_crawler)
 
 

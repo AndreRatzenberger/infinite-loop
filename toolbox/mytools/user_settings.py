@@ -39,7 +39,7 @@ class UserSettings:
         if not os.path.exists(self.env_file):
             with open(self.env_file, "a") as f:
                 for key, value in self.default_settings.items():
-                    f.write(f"{self._name}{key}={value}\n")
+                    f.write(f"{key}={value}\n")
         self._cache.update(
             {k: v for k, v in self.default_settings.items() if k not in self._cache}
         )

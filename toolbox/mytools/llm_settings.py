@@ -6,7 +6,7 @@ class LlmSettings(toolbox.mytools.user_settings.UserSettings):
         self,
         env_file=".env",
         name="OPENAI",
-        url="https://api.openai.com/v1",
+        url="https://api.openai.com/v1/",
         models=None,
         embedding_models=None,
         api_key="sk-",
