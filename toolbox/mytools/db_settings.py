@@ -1,7 +1,7 @@
 import toolbox.mytools.user_settings
 
 
-class MongoDBSettings(toolbox.mytools.user_settings.UserSettings):
+class DBSettings(toolbox.mytools.user_settings.UserSettings):
     def __init__(
         self,
         env_file=".env",
@@ -10,16 +10,15 @@ class MongoDBSettings(toolbox.mytools.user_settings.UserSettings):
         database_name="my_collection",
     ):
         default_settings = {
-            f"{name}_CONNECTION_STRING": "mongodb://localhost:27017",
-            f"{name}_DATABASE_NAME": "my_collection",
+            "CONNECTION_STRING": conn_string,
+            "DATABASE_NAME": database_name,
         }
-        super().__init__(env_file, default_settings)
-        self.name = name
+        super().__init__(env_file, default_settings, name)
         self.conn_string = conn_string
         self.database_name = database_name
         self._load_mongo_db_settings()
 
     def _load_mongo_db_settings(self):
         """Load settings with the possibility of default values if not present in .env."""
-        self.conn_string = self.get_setting(f"{self.name}_CONNECTION_STRING")
-        self.database_name = self.get_setting(f"{self.name}_DATABASE_NAME")
+        self.conn_string = self.get_setting("CONNECTION_STRING")
+        self.database_name = self.get_setting("DATABASE_NAME")

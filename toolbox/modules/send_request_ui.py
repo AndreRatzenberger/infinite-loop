@@ -17,9 +17,9 @@ class SendRequestUi:
 
     def send_request(self, user_input):
         """Send a request to the API using the configured settings."""
-        api_key = self.settings.get_setting(f"{self.settings.name}_API_KEY")
-        base_url = self.settings.get_setting(f"{self.settings.name}_BASE_URL")
-        model = self.settings.get_setting(f"{self.settings.name}_MODEL")
+        api_key = self.settings.get_setting("API_KEY")
+        base_url = self.settings.get_setting("BASE_URL")
+        model = self.settings.get_setting("MODEL")
 
         client = OpenAI(api_key=api_key, base_url=base_url)
 

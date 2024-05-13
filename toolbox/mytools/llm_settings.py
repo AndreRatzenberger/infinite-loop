@@ -21,25 +21,24 @@ class LlmSettings(toolbox.mytools.user_settings.UserSettings):
             }
 
         default_settings = {
-            f"{name}_API_KEY": api_key,  # Default API key placeholder
-            f"{name}_BASE_URL": url,
-            f"{name}_MODEL": list(models.values())[0],
-            f"{name}_EMBEDDING_MODEL": list(embedding_models.values())[0],
+            "API_KEY": api_key,
+            "BASE_URL": url,
+            "MODEL": list(models.values())[0],
+            "EMBEDDING_MODEL": list(embedding_models.values())[0],
         }
-        super().__init__(env_file, default_settings)
-        self.name = name
+        super().__init__(env_file, default_settings, name)
         self.models = models
         self.embedding_models = embedding_models
         self._load_llm_settings()
 
     def _load_llm_settings(self):
         """Load settings with the possibility of default values if not present in .env."""
-        self.api_key = self.get_setting(f"{self.name}_API_KEY")
-        self.base_url = self.get_setting(f"{self.name}_BASE_URL")
+        self.api_key = self.get_setting("API_KEY")
+        self.base_url = self.get_setting("BASE_URL")
         self.model = self.models.get(
-            self.get_setting(f"{self.name}_MODEL"), list(self.models.values())[0]
+            self.get_setting("MODEL"), list(self.models.values())[0]
         )
         self.embedding_model = self.embedding_models.get(
-            self.get_setting(f"{self.name}_EMBEDDING_MODEL"),
+            self.get_setting("EMBEDDING_MODEL"),
             list(self.embedding_models.values())[0],
         )
