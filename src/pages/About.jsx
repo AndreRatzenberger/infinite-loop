@@ -623,8 +623,8 @@ export default function About() {
           >
             {[
               {
-                title: "Merit over market share",
-                desc: "We don't recommend tools because they're popular. We recommend them because they're good.",
+                title: "Freedom over templates",
+                desc: "No two posts need to look alike. Each idea gets its own shape, its own rules, its own personality.",
               },
               {
                 title: "Experience over consumption",
