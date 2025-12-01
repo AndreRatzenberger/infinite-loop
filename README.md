@@ -1,11 +1,8 @@
 <p align="center">
-  <img alt="Infinite Loop" src="https://img.shields.io/badge/∞-INFINITE_LOOP-6366f1?style=for-the-badge&labelColor=0a0a0f" width="400">
+  <img alt="Infinite Loop" src="docs/banner.png" width="800">
 </p>
 
-<h1 align="center">🔄 Infinite Loop</h1>
-
 <p align="center">
-  <strong>Interactive Essays & Explorable Ideas</strong><br>
   <em>Blog posts that are single-page apps. Because static text is so 2010.</em>
 </p>
 
