@@ -324,6 +324,23 @@ export default function Home() {
             }}
           >
             <Link
+              to="/about"
+              style={{
+                fontSize: "11px",
+                fontFamily: '"JetBrains Mono", monospace',
+                textDecoration: "none",
+                background: "linear-gradient(135deg, #71717a 0%, #a1a1aa 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                transition: "opacity 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              About/Why?
+            </Link>
+            <span style={{ color: "#27272a", fontSize: "10px" }}>•</span>
+            <Link
               to="/impressum"
               style={{
                 color: "#3f3f46",
@@ -339,7 +356,7 @@ export default function Home() {
             </Link>
             <span style={{ color: "#27272a", fontSize: "10px" }}>•</span>
             <a
-              href="https://x.com/a_ratzengerfer"
+              href="https://x.com/a_ratzenberger"
               target="_blank"
               rel="noopener noreferrer"
               style={{
