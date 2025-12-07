@@ -68,6 +68,11 @@ function Section({ children, className = '', dark = false }) {
 
 // The actual blog post
 export default function FzfPost() {
+  // Scroll to top on mount (after any other effects that might scroll)
+  useEffect(() => {
+    setTimeout(() => window.scrollTo(0, 0), 0);
+  }, []);
+
   return (
     <div className="bg-neutral-900 text-neutral-100">
       {/* Hero */}

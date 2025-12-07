@@ -252,8 +252,13 @@ export default function FzfDemo({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [results.length]);
 
-  // Scroll selected item into view
+  // Scroll selected item into view (only after user interaction, not on mount)
+  const hasInteracted = useRef(false);
   useEffect(() => {
+    if (!hasInteracted.current) {
+      hasInteracted.current = true;
+      return;
+    }
     if (listRef.current) {
       const selected = listRef.current.children[selectedIndex];
       if (selected) {
