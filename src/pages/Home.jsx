@@ -163,13 +163,14 @@ export default function Home() {
                   }}
                 />
 
-                {/* Date & type */}
+                {/* Date & type & series */}
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "12px",
+                    gap: "8px",
                     marginBottom: "20px",
+                    flexWrap: "wrap",
                   }}
                 >
                   <span
@@ -195,6 +196,24 @@ export default function Home() {
                   >
                     {post.type}
                   </span>
+                  {post.series && (
+                    <span
+                      title={post.seriesFull}
+                      style={{
+                        fontSize: "10px",
+                        color: "#f5f5f5",
+                        padding: "3px 8px",
+                        background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                        borderRadius: "4px",
+                        fontFamily: '"JetBrains Mono", monospace',
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {post.series}
+                    </span>
+                  )}
                 </div>
 
                 {/* Title */}

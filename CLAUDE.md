@@ -69,6 +69,10 @@ const toolModules = import.meta.glob('./**/*.md', { eager: true, query: '?raw', 
 // Custom frontmatter parser (no Node.js deps)
 ```
 
+### Companion documentation
+
+Every post has a corresponding 'companion' markdown file in the `docs/companion` directory which provides additional context, technical details, or supplementary information like decisions made during development.
+
 ## Deployment
 
 GitHub Pages via manual workflow. See `docs/DEPLOYMENT.md` for Cloudflare Pages, Vercel, and Netlify options.
