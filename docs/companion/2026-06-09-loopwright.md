@@ -141,4 +141,3 @@ Browser verification should still be performed with the available
   rival hypothesis.
 - Make the final trace exportable as a small Loop Contract receipt.
 - Build a sibling post about active artifacts hosting resident loops.
-
