@@ -1,8 +1,34 @@
 // Post registry - add new posts here
 import TheStack from "./2025-12-01-the-stack";
 import Fzf from "./2025-12-07-fzf";
+import Loopwright from "./2026-06-09-loopwright";
+import HonestLoop from "./2026-06-10-honest-loop";
 
 export const posts = [
+    {
+        slug: "honest-loop",
+        title: "The Honest Loop",
+        description:
+            "A minimal scroll essay about the difference between asking once and learning through feedback.",
+        date: "2026-06-10",
+        type: "interactive essay",
+        color: "#56ffd0",
+        series: "NSP",
+        seriesFull: "New Software Primitives",
+        component: HonestLoop,
+    },
+    {
+        slug: "loopwright",
+        title: "The Loopwright",
+        description:
+            "A patchbay simulator for the craft of building AI feedback loops instead of heroic one-shot prompts.",
+        date: "2026-06-09",
+        type: "interactive",
+        color: "#56ffd0",
+        series: "NSP",
+        seriesFull: "New Software Primitives",
+        component: Loopwright,
+    },
     {
         slug: "fzf",
         title: "fzf",
