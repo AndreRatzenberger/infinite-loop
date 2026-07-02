@@ -1,0 +1,842 @@
+<!doctype html>
+<!--
+  Report assumptions:
+  - Audience: Pyro and readers who want a fast, evidence-grounded read on the German AU reform debate.
+  - Tone: sharp but source-disciplined; the artifact should separate "high absence is real" from "policy story is proven".
+  - Format: single-file HTML report, printable, no external libraries, direct browser open.
+  - Data: OECD sickness absence series retrieved 2026-07-02 via OECD SDMX API; German and policy context from official/public sources cited inline.
+  - Design: editorial data brief, warm paper/ink base, red for political/policy pressure, blue/green for measurement and counter-evidence.
+-->
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Krankenstand, Reformpaket und die Misstrauensrechnung</title>
+  <style>
+    :root {
+      --paper: #f7f6f1;
+      --sheet: #fffefa;
+      --ink: #171614;
+      --muted: #64605a;
+      --rule: #d7d0c4;
+      --red: #a33024;
+      --red-soft: #f3d8d1;
+      --blue: #245a7a;
+      --blue-soft: #dbe9ef;
+      --green: #2f6b52;
+      --green-soft: #dceade;
+      --amber: #aa7419;
+      --amber-soft: #f3e4c2;
+      --slate: #26323c;
+      --shadow: 0 20px 50px rgba(27, 24, 18, 0.08);
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      --sans: "Aptos", "Segoe UI", "Frutiger", "Trebuchet MS", sans-serif;
+      --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(163, 48, 36, 0.035) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(36, 90, 122, 0.03) 1px, transparent 1px),
+        var(--paper);
+      background-size: 42px 42px;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    a { color: var(--blue); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+
+    .page {
+      width: min(1180px, calc(100vw - 36px));
+      margin: 28px auto 64px;
+      background: var(--sheet);
+      border: 1px solid color-mix(in oklch, var(--rule) 78%, black);
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      padding: clamp(34px, 6vw, 72px);
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(300px, 0.72fr);
+      gap: clamp(28px, 4vw, 48px);
+      align-items: end;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(163, 48, 36, 0.12), transparent 30%),
+        linear-gradient(180deg, #fffefa 0%, #f7f4eb 100%);
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--red);
+      font-size: 12px;
+      margin-bottom: 22px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: var(--serif);
+      line-height: 0.98;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    h1 {
+      font-size: clamp(44px, 6.2vw, 82px);
+      max-width: 660px;
+      overflow-wrap: anywhere;
+      hyphens: auto;
+    }
+
+    .deck {
+      border-left: 2px solid var(--red);
+      padding-left: 20px;
+    }
+
+    .deck p {
+      margin: 0 0 18px;
+      font-size: clamp(17px, 1.6vw, 21px);
+      color: var(--slate);
+      text-wrap: pretty;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.72);
+    }
+
+    main { padding: clamp(26px, 4vw, 54px); }
+
+    section {
+      padding: 36px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    section:last-child { border-bottom: 0; }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 28px;
+      margin-bottom: 26px;
+    }
+
+    .section-num {
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding-top: 8px;
+    }
+
+    h2 { font-size: clamp(32px, 4.3vw, 58px); }
+
+    h3 {
+      font-size: clamp(22px, 2.2vw, 30px);
+      margin-bottom: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .grid-2 > *,
+    .grid-3 > *,
+    .kpi-grid > * {
+      min-width: 0;
+    }
+
+    .thesis {
+      border: 1px solid var(--rule);
+      background: linear-gradient(180deg, #ffffff 0%, #fbf9f2 100%);
+      padding: 22px;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .thesis .label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .thesis strong {
+      font-family: var(--serif);
+      font-size: clamp(25px, 3vw, 38px);
+      line-height: 1.05;
+      font-weight: 700;
+      display: block;
+      text-wrap: balance;
+    }
+
+    .thesis p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .red { color: var(--red); }
+    .blue { color: var(--blue); }
+    .green { color: var(--green); }
+    .amber { color: var(--amber); }
+
+    .note {
+      padding: 18px 20px;
+      background: var(--blue-soft);
+      border: 1px solid color-mix(in oklch, var(--blue-soft) 70%, var(--blue));
+      color: #183947;
+      font-size: 15px;
+    }
+
+    .note.warn {
+      background: var(--amber-soft);
+      border-color: color-mix(in oklch, var(--amber-soft) 68%, var(--amber));
+      color: #60420f;
+    }
+
+    .note.crit {
+      background: var(--red-soft);
+      border-color: color-mix(in oklch, var(--red-soft) 70%, var(--red));
+      color: #5c1d17;
+    }
+
+    .chart-block {
+      border: 1px solid var(--rule);
+      background: #fff;
+      padding: 24px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .chart-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 12px;
+      min-width: 0;
+    }
+
+    .chart-title .source {
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 136px minmax(0, 1fr) 56px;
+      gap: 12px;
+      align-items: center;
+      margin: 9px 0;
+      font-size: 14px;
+    }
+
+    .bar-label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--slate);
+    }
+
+    .bar-track {
+      height: 18px;
+      background: #efede6;
+      border: 1px solid #dfd7c9;
+      position: relative;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--blue);
+      width: var(--w);
+    }
+
+    .bar-row.germany .bar {
+      background: var(--red);
+    }
+
+    .bar-row.germany .bar-label,
+    .bar-row.germany .bar-value {
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    .bar-value {
+      font-family: var(--mono);
+      text-align: right;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .axis-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .line-chart {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      background:
+        linear-gradient(0deg, transparent 24%, rgba(215,208,196,0.6) 25%, transparent 26%),
+        linear-gradient(0deg, transparent 49%, rgba(215,208,196,0.6) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 74%, rgba(215,208,196,0.6) 75%, transparent 76%);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .kpi {
+      border-top: 3px solid var(--slate);
+      background: #fff;
+      padding: 16px;
+      min-height: 170px;
+    }
+
+    .kpi.red-line { border-color: var(--red); }
+    .kpi.blue-line { border-color: var(--blue); }
+    .kpi.green-line { border-color: var(--green); }
+    .kpi.amber-line { border-color: var(--amber); }
+
+    .kpi .big {
+      font-family: var(--serif);
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1;
+      display: block;
+      margin: 4px 0 10px;
+    }
+
+    .kpi .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .comparison {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #fff;
+      border: 1px solid var(--rule);
+    }
+
+    .comparison th,
+    .comparison td {
+      text-align: left;
+      border-bottom: 1px solid var(--rule);
+      padding: 12px 14px;
+      vertical-align: top;
+    }
+
+    .comparison th {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #f7f4ec;
+    }
+
+    .comparison tr:last-child td { border-bottom: 0; }
+
+    .status {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 7px;
+      border: 1px solid currentColor;
+      white-space: nowrap;
+    }
+
+    .status.good { color: var(--green); }
+    .status.bad { color: var(--red); }
+    .status.mixed { color: var(--amber); }
+
+    .logic {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr 48px 1fr;
+      gap: 10px;
+      align-items: stretch;
+      margin-top: 16px;
+    }
+
+    .logic-box {
+      border: 1px solid var(--rule);
+      background: #fff;
+      padding: 16px;
+    }
+
+    .logic-box strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 24px;
+    }
+
+    .cost-bars .bar-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 7px 12px;
+      margin: 16px 0;
+      align-items: baseline;
+    }
+
+    .cost-bars .bar-label {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    .cost-bars .bar-value {
+      white-space: nowrap;
+    }
+
+    .cost-bars .bar-track {
+      grid-column: 1 / -1;
+      height: 24px;
+    }
+    .cost-bars .cost-tax .bar { background: var(--green); }
+    .cost-bars .cost-policy .bar { background: var(--red); }
+    .cost-bars .cost-context .bar { background: var(--amber); }
+
+    .sources {
+      columns: 2;
+      column-gap: 34px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .sources li {
+      break-inside: avoid;
+      margin: 0 0 10px;
+    }
+
+    .caption {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+      margin-top: 12px;
+    }
+
+    footer {
+      padding: 26px 54px 40px;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+      background: #f5f2ea;
+    }
+
+    @media (max-width: 880px) {
+      header,
+      .section-head,
+      .grid-2,
+      .grid-3,
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .logic {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        transform: rotate(90deg);
+        height: 30px;
+      }
+
+      .sources { columns: 1; }
+      main { padding: 24px; }
+      footer { padding: 24px; }
+      .comparison {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+      }
+      .bar-row,
+      .cost-bars .bar-row {
+        grid-template-columns: 112px minmax(0, 1fr) 48px;
+      }
+
+      .cost-bars .bar-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+    }
+
+    @media print {
+      body { background: white; }
+      .page {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+        border: 0;
+      }
+      section { break-inside: avoid; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <div>
+        <div class="eyebrow">Datenbrief · Deutschland · 2. Juli 2026</div>
+        <h1>Krankenstand, Reformpaket und die Misstrauensrechnung</h1>
+      </div>
+      <div class="deck">
+        <p>Deutschland hat erhöhte Krankheitsabwesenheiten. Aber die politische Erzählung „Telefon-AU weg + Attest ab Tag 1 = Standortproblem gelöst“ ist durch die vorliegenden Zahlen nicht sauber belegt.</p>
+        <div class="meta">
+          <span class="pill">OECD: Rang 8/32</span>
+          <span class="pill">DEU 2025: 3,5 Wochen</span>
+          <span class="pill">Regierung: keine Marginalrechnung gefunden</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="section-head">
+          <div class="section-num">01 · Executive Read</div>
+          <h2>Die kurze Antwort: erhöht, ja. Pauschale Arbeitnehmer-Schuldgeschichte, nein.</h2>
+        </div>
+
+        <div class="grid-3">
+          <div class="thesis">
+            <div>
+              <div class="label">Was stimmt</div>
+              <strong class="blue">Deutschland liegt im oberen OECD-Feld.</strong>
+            </div>
+            <p>In der OECD-Reihe für Vollzeitbeschäftigte liegt Deutschland 2025 bei 3,5 Wochen Krankheitsabwesenheit pro Jahr, Rang 8 von 32.</p>
+          </div>
+          <div class="thesis">
+            <div>
+              <div class="label">Was fehlt</div>
+              <strong class="red">Keine belastbare Einsparrechnung für AU ab Tag 1.</strong>
+            </div>
+            <p>Die großen Zahlen zu Krankheit sind Gesamtkosten. Sie sind nicht die Einsparung, die durch mehr Attestpflicht entsteht.</p>
+          </div>
+          <div class="thesis">
+            <div>
+              <div class="label">Was kippt</div>
+              <strong class="green">Telefon-AU erklärt den Sprung kaum.</strong>
+            </div>
+            <p>vfa und WDR/AOK verweisen auf Erfassung, Atemwegserkrankungen und fehlende Hinweise auf systematischen Telefon-AU-Missbrauch.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-num">02 · OECD-Vergleich</div>
+          <h2>Deutschland ist nicht niedrig. Aber es ist auch nicht der europäische Ausreißer.</h2>
+        </div>
+
+        <div class="chart-block">
+          <div class="chart-title">
+            <h3>OECD sickness absences, 2025</h3>
+            <div class="source">Wochen/Jahr pro Vollzeitbeschäftigtem · OECD DF_AWDI</div>
+          </div>
+
+          <div class="bar-row"><div class="bar-label">Norwegen</div><div class="bar-track"><div class="bar" style="--w:100%"></div></div><div class="bar-value">5,7</div></div>
+          <div class="bar-row"><div class="bar-label">Slowenien</div><div class="bar-track"><div class="bar" style="--w:89%"></div></div><div class="bar-value">5,1</div></div>
+          <div class="bar-row"><div class="bar-label">Spanien</div><div class="bar-track"><div class="bar" style="--w:88%"></div></div><div class="bar-value">5,0</div></div>
+          <div class="bar-row"><div class="bar-label">Finnland</div><div class="bar-track"><div class="bar" style="--w:84%"></div></div><div class="bar-value">4,8</div></div>
+          <div class="bar-row"><div class="bar-label">Frankreich</div><div class="bar-track"><div class="bar" style="--w:72%"></div></div><div class="bar-value">4,1</div></div>
+          <div class="bar-row"><div class="bar-label">Portugal</div><div class="bar-track"><div class="bar" style="--w:70%"></div></div><div class="bar-value">4,0</div></div>
+          <div class="bar-row"><div class="bar-label">Belgien</div><div class="bar-track"><div class="bar" style="--w:68%"></div></div><div class="bar-value">3,9</div></div>
+          <div class="bar-row germany"><div class="bar-label">Deutschland</div><div class="bar-track"><div class="bar" style="--w:61%"></div></div><div class="bar-value">3,5</div></div>
+          <div class="bar-row"><div class="bar-label">Österreich</div><div class="bar-track"><div class="bar" style="--w:58%"></div></div><div class="bar-value">3,3</div></div>
+          <div class="bar-row"><div class="bar-label">Schweden</div><div class="bar-track"><div class="bar" style="--w:56%"></div></div><div class="bar-value">3,2</div></div>
+          <div class="bar-row"><div class="bar-label">Tschechien</div><div class="bar-track"><div class="bar" style="--w:54%"></div></div><div class="bar-value">3,1</div></div>
+          <div class="bar-row"><div class="bar-label">Kroatien</div><div class="bar-track"><div class="bar" style="--w:49%"></div></div><div class="bar-value">2,8</div></div>
+          <div class="bar-row"><div class="bar-label">Niederlande</div><div class="bar-track"><div class="bar" style="--w:47%"></div></div><div class="bar-value">2,7</div></div>
+          <div class="bar-row"><div class="bar-label">Lettland</div><div class="bar-track"><div class="bar" style="--w:46%"></div></div><div class="bar-value">2,6</div></div>
+
+          <div class="axis-note">OECD-Reihe enthält 32 Länder/Einheiten. Mittelwert der abgerufenen neuesten Werte: 2,43 Wochen, Median: 2,15 Wochen. Einige G20-Staaten fehlen oder sind methodisch nicht sauber vergleichbar.</div>
+        </div>
+
+        <div class="grid-2" style="margin-top:20px">
+          <div class="note">
+            <strong>Interpretation:</strong> Deutschland ist oberes Feld, aber mehrere reiche, produktive Länder liegen höher. Eine reine „deutsche Faulheits“-Erzählung trägt die Daten nicht.
+          </div>
+          <div class="note warn">
+            <strong>Methodik-Sternchen:</strong> OECD nutzt Labour-Force-Surveys, inklusive Voll- und Teilwochen, und korrigiert für Untererfassung. USA/Kanada haben Einschränkungen; internationale Vergleiche sind nur grob.
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-num">03 · Deutschland-Zeitreihe</div>
+          <h2>Der Sprung ist real in den Daten, aber nicht monokausal.</h2>
+        </div>
+
+        <div class="grid-2">
+          <div class="chart-block">
+            <div class="chart-title">
+              <h3>Deutschland in der OECD-Reihe</h3>
+              <div class="source">Wochen/Jahr · 2021-2025</div>
+            </div>
+            <svg class="line-chart" viewBox="0 0 600 250" role="img" aria-label="Deutschland steigt von 2,6 Wochen 2021 auf 3,5 Wochen 2025.">
+              <line x1="56" y1="205" x2="556" y2="205" stroke="#7b746b" stroke-width="1"/>
+              <line x1="56" y1="35" x2="56" y2="205" stroke="#7b746b" stroke-width="1"/>
+              <polyline points="56,178 181,166 306,74 431,62 556,74" fill="none" stroke="#a33024" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <g fill="#a33024" stroke="#fffefa" stroke-width="3">
+                <circle cx="56" cy="178" r="7"/><circle cx="181" cy="166" r="7"/><circle cx="306" cy="74" r="7"/><circle cx="431" cy="62" r="7"/><circle cx="556" cy="74" r="7"/>
+              </g>
+              <g font-family="monospace" font-size="13" fill="#64605a">
+                <text x="44" y="226">2021</text><text x="169" y="226">2022</text><text x="294" y="226">2023</text><text x="419" y="226">2024</text><text x="544" y="226">2025</text>
+                <text x="18" y="40">3,8</text><text x="18" y="124">3,1</text><text x="18" y="207">2,4</text>
+              </g>
+              <g font-family="monospace" font-size="13" fill="#171614">
+                <text x="38" y="160">2,6</text><text x="163" y="148">2,7</text><text x="288" y="55">3,5</text><text x="413" y="43">3,6</text><text x="538" y="55">3,5</text>
+              </g>
+            </svg>
+            <div class="caption">OECD API-Abruf: Deutschland 2021: 2,6 · 2022: 2,7 · 2023: 3,5 · 2024: 3,6 · 2025: 3,5 Wochen.</div>
+          </div>
+
+          <div>
+            <div class="note crit" style="margin-bottom:16px">
+              <strong>WDR/Destatis-Kontext:</strong> Der auffällige Anstieg ab 2022 hängt auch mit besserer digitaler AU-Erfassung zusammen. Zusätzlich spielten Atemwegserkrankungen nach Corona, Grippe/RSV/Covid und psychische Belastungen hinein.
+            </div>
+            <table class="comparison">
+              <thead>
+                <tr><th>Faktor</th><th>Was er erklärt</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Elektronische AU-Meldung</td>
+                  <td>Mehr Fälle werden überhaupt sichtbar; ältere Zeitreihen wirken niedriger.</td>
+                  <td><span class="status mixed">Messbruch</span></td>
+                </tr>
+                <tr>
+                  <td>Atemwegserkrankungen</td>
+                  <td>Seit 2021 stärkster Fehltage-Zuwachs laut WDR; vfa nennt Grippe/RSV/Covid.</td>
+                  <td><span class="status good">plausibel</span></td>
+                </tr>
+                <tr>
+                  <td>Telefon-AU</td>
+                  <td>Erklärt laut vfa den Sprung kaum; existierte schon seit 2020 und betrifft vor allem Kurzfälle.</td>
+                  <td><span class="status bad">schwach</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-num">04 · Geld und Größenordnungen</div>
+          <h2>Die großen Zahlen sind nicht die Einsparung der Reform.</h2>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi amber-line">
+            <span class="big amber">82 Mrd.</span>
+            <div class="small">IW-Schätzung: Entgeltfortzahlungskosten der Arbeitgeber 2024 inklusive Arbeitgeber-Sozialbeiträge.</div>
+          </div>
+          <div class="kpi amber-line">
+            <span class="big amber">160 Mrd.</span>
+            <div class="small">vfa: bis zu verlorene Wertschöpfung über vier Jahre durch erhöhten Krankenstand.</div>
+          </div>
+          <div class="kpi green-line">
+            <span class="big green">25,7 Mrd.</span>
+            <div class="small">Tax Justice Network: verlorene Unternehmenssteuer durch globalen Steuermissbrauch für Deutschland.</div>
+          </div>
+          <div class="kpi green-line">
+            <span class="big green">147 Mrd.</span>
+            <div class="small">DIW-Modell im Auftrag der Linken: potenzielles jährliches Vermögensteuer-Aufkommen; sehr aggressives Modell mit Risiken.</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:22px">
+          <div class="chart-block cost-bars">
+            <div class="chart-title">
+              <h3>Was oft vermischt wird</h3>
+              <div class="source">Mrd. Euro · verschiedene Basen</div>
+            </div>
+            <div class="bar-row cost-context"><div class="bar-label">vfa Wertschöpfung, 4 Jahre</div><div class="bar-track"><div class="bar" style="--w:100%"></div></div><div class="bar-value">bis 160</div></div>
+            <div class="bar-row cost-tax"><div class="bar-label">DIW Vermögensteuer-Modell/Jahr</div><div class="bar-track"><div class="bar" style="--w:92%"></div></div><div class="bar-value">147</div></div>
+            <div class="bar-row cost-context"><div class="bar-label">IW Entgeltfortzahlung/Jahr</div><div class="bar-track"><div class="bar" style="--w:51%"></div></div><div class="bar-value">82</div></div>
+            <div class="bar-row cost-tax"><div class="bar-label">TJN Unternehmenssteuerverlust/Jahr</div><div class="bar-track"><div class="bar" style="--w:16%"></div></div><div class="bar-value">25,7</div></div>
+            <div class="bar-row cost-policy"><div class="bar-label">AU ab Tag 1 Einsparung</div><div class="bar-track"><div class="bar" style="--w:0%"></div></div><div class="bar-value">keine Zahl</div></div>
+            <div class="axis-note">Die Reform müsste eine marginale Nettozahl liefern: verhinderte unechte Kurzkrankheiten minus Arztzeit, Bürokratie, Wartezimmerinfekte und Produktivitätsverlust. Genau diese Zahl fehlt.</div>
+          </div>
+
+          <div class="note warn">
+            <h3>Der Rechenfehler</h3>
+            <p><strong>Gesamtkosten von Krankheit</strong> sind nicht gleich <strong>Einsparung durch Attestpflicht</strong>. Die meisten Ausfälle sind echte Krankheit. Wenn man alle ab Tag 1 in Praxen schiebt, verlagert man Kosten in ein ohnehin überlastetes System.</p>
+            <p>Das offizielle Reformpapier nennt die Maßnahme, aber keine BIP-, Haushalts- oder Nettoeinsparungsprognose. Die Politik argumentiert also eher aus einem Standort- und Missbrauchsnarrativ als aus einer sichtbaren Kosten-Nutzen-Rechnung.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-num">05 · Policy Logic</div>
+          <h2>Die Kette der Regierung ist zu grob für die Daten.</h2>
+        </div>
+
+        <div class="logic" aria-label="Policy logic chain">
+          <div class="logic-box">
+            <strong>1. Hoher Krankenstand</strong>
+            <p>Stimmt als Signal: Deutschland liegt über OECD-Mittel und im oberen Feld.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="logic-box">
+            <strong>2. Telefon-AU / Blaumachen</strong>
+            <p>Schwache Brücke: vfa sagt Telefon-AU erklärt den Sprung kaum; AOK/WDR sehen keinen systematischen Missbrauch.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="logic-box">
+            <strong>3. AU ab Tag 1 spart Wohlstand</strong>
+            <p>Nicht belegt: keine konkrete marginale Netto-Einsparrechnung im Beschlusspapier gefunden.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:22px">
+          <table class="comparison">
+            <thead>
+              <tr><th>Behauptung</th><th>Datenlage</th><th>Urteil</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>„Deutschland hat zu viele Krankentage.“</td>
+                <td>Über OECD-Mittel; Rang 8 von 32 in der abgerufenen OECD-Reihe.</td>
+                <td><span class="status mixed">teilweise ja</span></td>
+              </tr>
+              <tr>
+                <td>„Telefon-AU ist der zentrale Treiber.“</td>
+                <td>vfa: erklärt Anstieg kaum; WDR/AOK: kein systematischer Missbrauch.</td>
+                <td><span class="status bad">nicht belegt</span></td>
+              </tr>
+              <tr>
+                <td>„AU ab Tag 1 ist Bürokratieabbau.“</td>
+                <td>Ärzte warnen vor Bürokratiewelle und volleren Praxen.</td>
+                <td><span class="status bad">widersprüchlich</span></td>
+              </tr>
+              <tr>
+                <td>„Das ist eine Wachstumsreform.“</td>
+                <td>Es fehlt die Netto-Rechnung für verhinderte Fehlzeiten vs. Zusatzkosten.</td>
+                <td><span class="status mixed">offen</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="note crit">
+            <h3>Politischer Kern</h3>
+            <p>Wenn die Maßnahme vor allem symbolisch gegen „Blaumachen“ wirkt, ist sie sozial teuer: Sie trifft alle Kranken, belastet Praxen und sendet Misstrauen an Beschäftigte, ohne den realen Krankenstand kausal zu behandeln.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-num">06 · Bessere Fragestellung</div>
+          <h2>Wenn der Krankenstand wirklich das Problem ist, wäre die Reform anders gebaut.</h2>
+        </div>
+
+        <div class="grid-3">
+          <div class="thesis">
+            <div>
+              <div class="label">Gesundheit</div>
+              <strong>Prävention statt Generalverdacht.</strong>
+            </div>
+            <p>Grippeimpfungen, Luftqualität, frühe Diagnostik, bessere Primärversorgung und mental-health Interventionen greifen näher an den Treibern.</p>
+          </div>
+          <div class="thesis">
+            <div>
+              <div class="label">Steuerung</div>
+              <strong>Risikobasiert statt pauschal.</strong>
+            </div>
+            <p>Auffällige Muster und betriebliches Gesundheitsmanagement adressieren Missbrauch/Fehlsteuerung genauer als Attestpflicht für alle.</p>
+          </div>
+          <div class="thesis">
+            <div>
+              <div class="label">Arbeit</div>
+              <strong>Wiedereinstieg statt Wartezimmer.</strong>
+            </div>
+            <p>Flexible Krankschreibung, stufenweise Rückkehr und weniger Präsenzdruck können Ausfälle reduzieren, ohne Krankheit zu bestrafen.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="section-num">07 · Quellen</div>
+          <h2>Was diesen Report trägt.</h2>
+        </div>
+
+        <ol class="sources">
+          <li><a href="https://www.bundesregierung.de/resource/blob/2196306/2445592/bc8e5e160d879f0bdd593121a96a45d2/2026-07-02-koaausschuss-data.pdf">Bundesregierung: „Ein Programm für Aufschwung und Beschäftigung“</a>, Koalitionsausschuss-Papier vom 02.07.2026.</li>
+          <li><a href="https://www.aerzteblatt.de/news/koalitionsausschuss-abschaffung-der-telefon-au-und-krankschreibung-ab-erstem-tag-geplant-80e01212-d746-4679-8376-da1a4330b629">Deutsches Ärzteblatt</a>: Bericht zur Abschaffung der Telefon-AU und AU ab erstem Tag, 02.07.2026.</li>
+          <li><a href="https://www.tagesschau.de/inland/arbeitsmarkt-koalition-100.html">Tagesschau</a>: Reaktionen auf Arbeitsmarkt-/Krankschreibungspläne, 02.07.2026.</li>
+          <li><a href="https://data-explorer.oecd.org/vis?df%5Bag%5D=OECD.ELS.HD&amp;df%5Bds%5D=dsDisseminateFinalDMZ&amp;df%5Bid%5D=DSD_HEALTH_STAT%40DF_AWDI&amp;dq=.A...........&amp;lc=en&amp;ly%5Bcl%5D=TIME_PERIOD&amp;ly%5Brs%5D=MEASURE&amp;ly%5Brw%5D=REF_AREA&amp;pd=2010%2C&amp;to%5BTIME_PERIOD%5D=false&amp;vw=tb">OECD Data Explorer</a>: Sickness absences from work, DF_AWDI.</li>
+          <li><a href="https://stats.oecd.org/wbos/fileview2.aspx?IDFile=3802cd9f-93d2-4f3a-98af-96d1a86b2512">OECD Methodik-PDF</a>: Definitions, Sources and Methods, Sickness absences.</li>
+          <li><a href="https://www.destatis.de/EN/Themes/Labour/Labour-Market/Quality-Employment/Dimension2/2_3_StaffSickLeave.html">Destatis</a>: Staff on sick leave, 15,1 Tage 2023 und Interpretationshinweise.</li>
+          <li><a href="https://www1.wdr.de/nachrichten/krankentage-merz-nrw-100.html">WDR</a>: Krankenstand, digitale Erfassung, AOK-Hinweis zur Telefon-AU und Missbrauchsdebatte.</li>
+          <li><a href="https://www.vfa.de/de/presse/pressemitteilungen/pm-001-2026-hoher-krankenstand-bremst-die-wirtschaftliche-erholung-bis-zu-160-milliarden-euro-wertschoepfung-verloren.html">vfa</a>: Hoher Krankenstand und Wertschöpfungsverlust; Telefon-AU erklärt Anstieg kaum.</li>
+          <li><a href="https://www.iwkoeln.de/studien/jochen-pimpertz-entgeltfortzahlung-bei-krankheit-kostet-82-milliarden-euro.html">IW Köln</a>: Entgeltfortzahlung bei Krankheit kostet 82 Milliarden Euro.</li>
+          <li><a href="https://taxjustice.net/reports/the-state-of-tax-justice-2025/">Tax Justice Network</a>: State of Tax Justice 2025, Deutschland-Schätzung verlorener Unternehmenssteuern.</li>
+          <li><a href="https://www.tagesschau.de/inland/innenpolitik/vermoegensteuer-linke-diw-100.html">Tagesschau / DIW</a>: Vermögensteuer-Modell im Auftrag der Linken und Ertragsschätzung.</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      Erstellt als lokaler HTML-Report in docs/reports. Hinweis: Die OECD-Vergleichsdaten sind eine vergleichbare Arbeitskräfteerhebungsreihe, nicht identisch mit nationalen AU-/Krankenkassendaten.
+    </footer>
+  </article>
+</body>
+</html>
