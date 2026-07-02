@@ -120,7 +120,9 @@ No CMS. No build-time static generation. No external dependencies for content. J
 
 More posts. Different formats. Same principle: **ideas rendered as experiences**.
 
-The blog is the app. The app is the blog. The loop is infinite.
+The blog is the app. 
+The app is the blog. 
+The loop is infinite.
 
 ---
 
